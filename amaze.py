@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-
+#
+# Copyright (c) 2021 Joshua Hughes <kivhift@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+#
 import argparse
 import pathlib
 import sys

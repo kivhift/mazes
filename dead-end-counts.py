@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-
+#
+# Copyright (c) 2021 Joshua Hughes <kivhift@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+#
 from time import monotonic_ns
 
 import maze.grid

@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2021 Joshua Hughes <kivhift@gmail.com>
+#
+# SPDX-License-Identifier: MIT
+#
 import string
 
 from random import choice
