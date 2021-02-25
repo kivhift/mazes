@@ -16,8 +16,8 @@ from PySide6.QtGui import QColor, QPainter, QShortcut, QKeySequence
 from .grid import ColoredGrid, Cell, Mask
 from . import algorithm
 
-class RowColumnDialog(QDialog):
-    def __init__(self, parent=None):
+class RowColumnAlgorithmDialog(QDialog):
+    def __init__(self, parent=None, show_algo=True):
         super().__init__(parent)
 
         vbox = QVBoxLayout(self)
@@ -37,6 +37,12 @@ class RowColumnDialog(QDialog):
         cols.setMaximum(200)
         cols.setSuffix(' columns')
 
+        self._algo = None
+        if show_algo:
+            self._algo = combo = QComboBox(self)
+            combo.addItems(sorted(algorithm.names))
+            vbox.addWidget(combo)
+
         buttons = QDialogButtonBox(
             QDialogButtonBox.Ok | QDialogButtonBox.Cancel, parent=self
         )
@@ -52,26 +58,6 @@ class RowColumnDialog(QDialog):
     @property
     def columns(self):
         return self._columns.value()
-
-class RowColumnAlgorithmDialog(RowColumnDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self._algo = None
-
-        layout = self.layout()
-        count = layout.count()
-        if 0 == count:
-            return
-
-        buttons = layout.takeAt(count - 1)
-        if buttons is None:
-            return
-
-        self._algo = combo = QComboBox(self)
-        combo.addItems(sorted(algorithm.names))
-        layout.addWidget(combo)
-        layout.addItem(buttons)
 
     @property
     def algorithm(self):
@@ -305,7 +291,7 @@ class MaskMainWindow(QMainWindow):
         if not self.changed_mask_OK('New'):
             return
 
-        rc = RowColumnDialog(self)
+        rc = RowColumnAlgorithmDialog(self, show_algo=False)
         rc.setWindowTitle('Mask dimensions')
         if QDialog.Rejected == rc.exec_():
             return
