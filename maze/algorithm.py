@@ -8,15 +8,17 @@ from random import choice, randint
 names = set()
 def register_algo(fn):
     names.add(fn.__name__)
+    return fn
 
+@register_algo
 def binary_tree(grid):
     for cell in grid.each_cell:
         if neighbors := list(filter(None, (cell.N, cell.E))):
             cell.link(choice(neighbors))
 
     return grid
-register_algo(binary_tree)
 
+@register_algo
 def sidewinder(grid):
     run = []
     run_append = run.append
@@ -36,8 +38,8 @@ def sidewinder(grid):
                 cell.link(cell.E)
 
     return grid
-register_algo(sidewinder)
 
+@register_algo
 def aldous_broder(grid):
     cell = grid.random_cell
     unvisited = grid.size - 1
@@ -52,13 +54,13 @@ def aldous_broder(grid):
         cell = neighbor
 
     return grid
-register_algo(aldous_broder)
 
 def remove_random(L):
     i = randint(0, len(L) - 1)
     ele = L[i]
     del L[i]
 
+@register_algo
 def wilsons(grid):
     unvisited = list(grid.each_cell)
     remove_random(unvisited)
@@ -79,8 +81,8 @@ def wilsons(grid):
             unvisited.remove(path[i])
 
     return grid
-register_algo(wilsons)
 
+@register_algo
 def hunt_and_kill(grid):
     current = grid.random_cell
     while current:
@@ -100,8 +102,8 @@ def hunt_and_kill(grid):
                     break
 
     return grid
-register_algo(hunt_and_kill)
 
+@register_algo
 def recursive_backtracker(grid, start=None):
     stack = []
     push, pop, top = stack.append, stack.pop, lambda: stack[-1]
@@ -117,6 +119,5 @@ def recursive_backtracker(grid, start=None):
             pop()
 
     return grid
-register_algo(recursive_backtracker)
 
 del register_algo
