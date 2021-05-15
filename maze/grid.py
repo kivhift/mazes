@@ -5,7 +5,7 @@
 #
 import string
 
-from random import choice
+from random import choice, random, shuffle
 
 class Distances(dict):
     def __init__(self, root):
@@ -244,6 +244,23 @@ class Grid:
                 dead_ends.append(cell)
 
         return dead_ends
+
+    def braid(self, p=1.0):
+        dead_ends = self.dead_ends
+        shuffle(dead_ends)
+
+        for cell in dead_ends:
+            if 1 != len(cell.links) or random() > p:
+                continue
+
+            unlinked_neighbors = [
+                x for x in cell.neighbors if not cell.linked_to(x)
+            ]
+            dead_end_neighbors = list(
+                filter(lambda x: 1 == len(x.links), unlinked_neighbors)
+            )
+
+            cell.link(choice(dead_end_neighbors or unlinked_neighbors))
 
 _b62 = string.digits + string.ascii_lowercase + string.ascii_uppercase
 class DistanceGrid(Grid):

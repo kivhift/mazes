@@ -23,6 +23,7 @@ def main(args_list=None):
     _a('-a', '--algorithm', default='binary_tree'
         , choices=sorted(maze.algorithm.names)
         , help='Maze-generation algorithm to use')
+    _a('-b', '--braid', type=float, default=0., help='Percent of dead ends to cull')
     _a('-c', '--color', action='store_true', help='Color output')
     _a('-f', '--format', choices=sorted(maze.output.formats)
         , help='Output format to use')
@@ -50,6 +51,10 @@ def main(args_list=None):
         raise SystemExit(f'Height should be positive: {args.height}')
     if args.width < 1:
         raise SystemExit(f'Width should be positive: {args.width}')
+    if args.braid < 0. or args.braid > 100.:
+        raise SystemExit(f'Braid percentage out of range: {args.braid}')
+    else:
+        args.braid /= 100.
 
     gen_algo = getattr(maze.algorithm, args.algorithm)
 
@@ -61,6 +66,9 @@ def main(args_list=None):
         g = gen_algo(maze.grid.MaskedColoredGrid(maze.grid.Mask.from_RLE(args.mask)))
     else:
         g = gen_algo(maze.grid.ColoredGrid(args.height, args.width))
+
+    if args.braid > 0.:
+        g.braid(args.braid)
 
 #    ###
 #    g = gen_algo(maze.grid.ColoredGrid(args.height, args.width))
