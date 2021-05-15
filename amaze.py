@@ -29,7 +29,7 @@ def main(args_list=None):
     _a('-m', '--mask', help='RLE (file) to use as mask')
     _a('-o', '--output', help='File to output to')
     _a('-p', '--print', action='store_true', help='Print maze to stdout')
-    _a('-s', '--scale', type=float, help='Amount to scale drawing by')
+    _a('-s', '--scale', type=float, default=1., help='Amount to scale drawing by')
     _a('-H', '--height', default=5, type=int, help='Maze height')
     _a('-W', '--width', default=5, type=int, help='Maze width')
     _a('--gui', choices='mask maze'.split()
@@ -76,9 +76,7 @@ def main(args_list=None):
         if args.format is None:
             raise SystemError('Must specify an output format')
 
-        if args.scale is None:
-            args.scale = 1
-        elif args.scale <= 0.0:
+        if args.scale <= 0.0:
             raise SystemError('Scale must be greater than 0')
 
         if args.color:
